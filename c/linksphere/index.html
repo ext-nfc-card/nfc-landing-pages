@@ -1,1 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LINKSPHERE — Fiber Internet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(180deg, #E0F2FE 0%, #F0F9FF 45%, #E0F2FE 100%);
+    min-height: 100vh; color: #0C4A6E;
+    overflow-x: hidden;
+  }
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #E0F2FE;
+    animation: slideDown .5s ease both;
+  }
+  @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .topbar-inner { max-width: 720px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 36px; height: 36px; object-fit: contain; border-radius: 50%; background: #fff; }
+  .brand-text b { font-size: 18px; letter-spacing: -0.5px; color: #0C4A6E; display: block; line-height: 1; }
+  .brand-text span { font-size: 10px; letter-spacing: 2.5px; color: #0284C7; font-weight: 700; }
+  .btn-apply {
+    background: #0284C7; color: #fff; text-decoration: none;
+    padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px;
+    box-shadow: 0 4px 14px rgba(2,132,199,0.3);
+    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    display: inline-block;
+  }
+  .btn-apply:hover { background: #0369A1; transform: translateY(-1px) scale(1.03); box-shadow: 0 8px 20px rgba(2,132,199,0.35); }
+  .btn-apply:active { transform: scale(0.97); }
 
+  .wrap { max-width: 430px; margin: 0 auto; padding: 28px 16px 40px; text-align: center; }
+  .avatar {
+    width: 104px; height: 104px; margin: 0 auto 14px;
+    background: #fff; border-radius: 50%; padding: 8px;
+    box-shadow: 0 10px 30px rgba(2,132,199,0.18); overflow: hidden;
+    animation: fadeUp .6s ease both, float 3s ease-in-out 1s infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .avatar img { width: 100%; height: 100%; object-fit: contain; }
+  h1 { font-size: 32px; font-weight: 900; letter-spacing: -1px; animation: fadeUp .6s .1s ease both; }
+  .handle { color: #0284C7; font-weight: 600; margin: 4px 0 10px; animation: fadeUp .6s .15s ease both; }
+  .bio { font-size: 14px; line-height: 1.5; color: #334155; max-width: 360px; margin: 0 auto; animation: fadeUp .6s .2s ease both; }
+  .location { margin-top: 10px; font-size: 13px; font-weight: 600; color: #475569; animation: fadeUp .6s .25s ease both; }
+  .socials { display: flex; justify-content: center; gap: 10px; margin: 18px 0 8px; animation: fadeUp .6s .3s ease both; }
+  .socials a {
+    width: 40px; height: 40px; border-radius: 50%; background: #fff;
+    display: grid; place-items: center; text-decoration: none; font-size: 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid #E0F2FE;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .socials a:hover { transform: translateY(-3px) scale(1.1); box-shadow: 0 8px 18px rgba(2,132,199,0.2); }
+  .live { font-size: 11px; letter-spacing: 2px; font-weight: 800; color: #0284C7; margin: 14px 0 16px; animation: fadeUp .6s .35s ease both; }
+  .live i { display: inline-block; width: 8px; height: 8px; background: #22C55E; border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: .6; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .link-list { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+  .link-card {
+    background: #fff; border-radius: 999px; box-shadow: 0 4px 18px rgba(2,132,199,0.10);
+    overflow: hidden; border: 1px solid #F0F9FF;
+    animation: fadeUp .6s ease both;
+    transition: transform .25s ease, box-shadow .25s ease, border-radius .3s ease;
+  }
+  .link-card:nth-child(1){ animation-delay: .35s; } .link-card:nth-child(2){ animation-delay: .45s; }
+  .link-card:nth-child(3){ animation-delay: .55s; } .link-card:nth-child(4){ animation-delay: .65s; }
+  .link-card:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 28px rgba(2,132,199,0.18); }
+  .link-card:active { transform: scale(0.98); }
+  .link-card.open { border-radius: 24px; box-shadow: 0 12px 30px rgba(2,132,199,0.18); }
+  .link-btn { width: 100%; background: none; border: 0; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 14px 16px; text-align: left; font-family: inherit; }
+  .link-btn:hover { background: #F0F9FF; }
+  .icon { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-size: 19px; flex-shrink: 0; transition: transform .2s ease; }
+  .link-card:hover .icon { transform: scale(1.1) rotate(-4deg); }
+  .icon.blue { background: #E0F2FE; } .icon.fb { background: #DBEAFE; }
+  .icon.yellow { background: #FEF9C3; } .icon.green { background: #DCFCE7; }
+  .link-btn b { font-size: 15px; color: #0C4A6E; display: block; }
+  .link-btn small { font-size: 12px; color: #64748B; }
+  .arrow { margin-left: auto; color: #94A3B8; transition: transform .3s ease; font-size: 12px; }
+  .link-card.open .arrow { transform: rotate(180deg); }
+
+  /* SMOOTH ACCORDION - this is what was missing before */
+  .panel {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .35s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+    opacity: 0; padding: 0 16px 0 70px;
+  }
+  .panel > div { overflow: hidden; }
+  .link-card.open .panel { grid-template-rows: 1fr; opacity: 1; padding-bottom: 16px; }
+  .panel .inner { font-size: 14px; line-height: 1.6; color: #334155; animation: panelIn .3s ease; }
+  @keyframes panelIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .panel .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #E2E8F0; }
+  .panel .row:last-child { border: 0; }
+  .cta {
+    display: inline-block; margin-top: 10px; background: #0284C7; color: #fff;
+    padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 13px; text-decoration: none; border: 0; cursor: pointer;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .cta:hover { transform: scale(1.05); background: #0369A1; }
+  .cta.secondary { background: #fff; color: #0284C7; border: 1px solid #BAE6FD; }
+  .plan { background: #F0F9FF; border-radius: 16px; padding: 12px; margin: 8px 0; transition: transform .2s ease; }
+  .plan:hover { transform: scale(1.02); }
+  .plan b { color: #0C4A6E; } .plan .price { color: #0284C7; font-weight: 800; font-size: 18px; }
+  .badge { display: inline-block; background: #0284C7; color: #fff; font-size: 10px; padding: 3px 8px; border-radius: 999px; font-weight: 800; letter-spacing: 0.5px; }
+  footer { margin-top: 28px; font-size: 12px; color: #94A3B8; }
+  @media (max-width: 480px) { .wrap { padding: 22px 14px 30px; } h1 { font-size: 28px; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <img src="Weblogo.jpg" alt="LINKSPHERE logo">
+      <div class="brand-text"><b>LINKSPHERE</b><span>FIBER INTERNET</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="avatar"><img src="Weblogo.jpg" alt="LINKSPHERE"></div>
+  <h1>LINKSPHERE</h1>
+  <div class="handle">@linksphere</div>
+  <p class="bio">Fast, Reliable Fiber Internet 🚀<br>Unlimited Data • No Data Cap • For Home &amp; Business</p>
+  <div class="location">📍 Serving Rodriguez</div>
+
+  <div class="socials">
+    <a href="https://www.facebook.com/profile.php?id=61592529025981" title="Facebook">f</a>
+    <a href="tel:09452914233" title="Call">📞</a>
+    <a href="mailto:linksphere.fiber@gmail.com" title="Email">✉️</a>
+    <a href="https://www.facebook.com/messages/t/1284225731432527" title="Messenger">💬</a> 
+  </div>
+
+  <div class="link-list">
+
+    <!-- 1. Save Our Contact -->
+    <div class="link-card">
+      <button class="link-btn" onclick="toggleCard(this)">
+        <span class="icon blue">📇</span>
+        <span><b>Save Our Contact</b><br><small>Hotline, email &amp; office</small></span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="panel">
+        <div class="row"><span>Hotline</span><b>0945-291-4233</b></div>
+        <div class="row"><span>Email</span><b>linksphere.fiber@gmail.com</b></div>
+        <div class="row"><span>Office</span><b>Rodriguez, Rizal</b></div>
+      </div>
+    </div>
+
+    <!-- 2. Facebook Page -->
+    <div class="link-card">
+      <button class="link-btn" onclick="toggleCard(this)">
+        <span class="icon fb">👍</span>
+        <span><b>Facebook Page</b><br><small>Promos, maintenance updates &amp; announcements</small></span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="panel">
+        <p><b>LINKSPHERE Fiber Internet</b><br>Follow us for promos, maintenance schedules, and new coverage areas.</p>
+        <!-- REPLACE # with your real Facebook Page URL -->
+        <a class="cta" href="https://www.facebook.com/profile.php?id=61592529025981" target="_blank">Follow on Facebook →</a>
+      </div>
+    </div>
+
+    <!-- 3. View Internet Plans -->
+    <div class="link-card">
+      <button class="link-btn" onclick="toggleCard(this)">
+        <span class="icon yellow">📄</span>
+        <span><b>View Internet Plans</b><br><small>Fiber plans for home &amp; business</small></span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="panel">
+        <div class="plan">
+          <b>55 Mbps</b><div class="price">₱700 / mo</div>
+          55 Mbps • Unlimited Data <br>Good for 5–8 devices
+        </div>
+        <div class="plan">
+          <b>65 Mbps</b><div class="price">₱800 / mo</div>
+          65 Mbps • Unlimited Data <br>Good for 6–10 devices
+        </div>
+        <div class="plan">
+          <b>85 Mbps</b><div class="price">₱900 / mo</div>
+          85 Mbps • Unlimited Data <br>Good for 8–13 devices
+        </div>
+        <div class="plan" style="border:2px solid #0284C7; background:#fff;">
+          <span class="badge">MOST POPULAR</span><br>
+          <b>110 Mbps</b><div class="price">₱1,000 / mo</div>
+          110 Mbps • Unlimited Data <br>Ideal for WFH &amp; Streaming. Good for 10–18 devices
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Apply for Installation -->
+    <div class="link-card" id="apply">
+      <button class="link-btn" onclick="toggleCard(this)">
+        <span class="icon green">📝</span>
+        <span><b>Apply for Installation</b><br><small>Apply in 2 minutes — we'll call you</small></span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="panel">
+        <p>Apply in 2 minutes, we'll call you for scheduling.<br>Installation in 1-2 days if your area is covered.</p>
+        <!-- REPLACE # with your real Google Form URL -->
+        <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfPQ-BY3NrCmkgegOjATzpxBOm4fi6ZX61drf9SzujIb6GWEg/viewform?usp=preview" target="_blank">Fill Application Form →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>© LINKSPHERE • Fiber Internet</footer>
+</main>
+
+<script>
+  // Wrap panel content for smooth height animation (grid 0fr -> 1fr)
+  document.querySelectorAll('.panel').forEach(panel => {
+    const wrapper = document.createElement('div');
+    const inner = document.createElement('div');
+    inner.className = 'inner';
+    while (panel.firstChild) inner.appendChild(panel.firstChild);
+    wrapper.appendChild(inner);
+    panel.appendChild(wrapper);
+  });
+  function toggleCard(btn) {
+    const card = btn.closest('.link-card');
+    const wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.link-card').forEach(c => c.classList.remove('open'));
+    if (!wasOpen) card.classList.add('open');
+  }
+  // Open "Apply" if URL has #apply
+  if (location.hash === '#apply') {
+    document.querySelector('#apply').classList.add('open');
+  }
+</script>
+
+</body>
+</html>
